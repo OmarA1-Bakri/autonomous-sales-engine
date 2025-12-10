@@ -3,16 +3,64 @@ workflow:
     name: dynamic-outreach
     title: "Dynamic Adaptive Outreach"
     description: "Event-driven workflow that responds intelligently to prospect behavior"
-    version: "1.0.0"
+    version: "2.0.0"
     track: method
     phases:
+      - validation    # NEW: Data quality checks + human approval gates
       - outreach
       - engagement
       - conversion
     module: sales
     execution_mode: reactive  # Event-driven, not sequential
 
+    # PRIMARY IDENTIFICATION - Internal workflow ID is the source of truth
+    identification:
+      primary_key: workflow_id                    # UUID from workflow_states table
+      display_format: "WF-{short_id}"             # e.g., WF-a1b2c3d4
+
+      # External provider IDs are stored for cross-referencing only
+      external_references:
+        lemlist_campaign_id:
+          storage: provider_config.lemlist.campaign_id
+          purpose: "Lemlist webhook correlation"
+          required: false
+        postmark_template_id:
+          storage: provider_config.postmark.template_id
+          purpose: "Postmark email sending"
+          required: false
+        phantombuster_agent_id:
+          storage: provider_config.phantombuster.agent_id
+          purpose: "LinkedIn automation"
+          required: false
+        heygen_avatar_id:
+          storage: provider_config.heygen.avatar_id
+          purpose: "AI video personalization"
+          required: false
+
+      # How to resolve lookups
+      resolution:
+        by_workflow_id: "SELECT * FROM workflow_states WHERE id = $1"
+        by_lemlist_id: "SELECT * FROM campaign_instances WHERE provider_config->'lemlist'->>'campaign_id' = $1"
+        by_provider_event: "Match via provider_event_id in campaign_events table"
+
   agents:
+    - role: data-quality-guardian
+      module: sales
+      when: "Validate contact data before outreach"
+      capabilities:
+        - email_format_validation
+        - mx_record_verification
+        - duplicate_detection
+        - completeness_scoring
+
+    - role: approval-coordinator
+      module: sales
+      when: "Manage human approval gates"
+      capabilities:
+        - approval_request_routing
+        - escalation_management
+        - sla_monitoring
+
     - role: engagement-analyst
       module: sales
       when: "Analyze all prospect interactions"
@@ -31,6 +79,32 @@ workflow:
 
   # Event triggers - workflow reacts to these events
   triggers:
+    # VALIDATION PHASE TRIGGERS (run before outreach)
+    - event: contact_enrolled
+      priority: critical
+      phase: validation
+      handler: data-quality-validation-flow
+      description: "Validate contact data quality before any outreach"
+
+    - event: high_value_campaign_started
+      priority: high
+      phase: validation
+      handler: human-approval-flow
+      description: "Require human approval for high-value/high-risk campaigns"
+
+    - event: approval_received
+      priority: critical
+      phase: validation
+      handler: proceed-to-outreach-flow
+      description: "Approval granted - proceed with campaign execution"
+
+    - event: approval_denied
+      priority: high
+      phase: validation
+      handler: handle-rejection-flow
+      description: "Approval denied - notify stakeholders and pause"
+
+    # EXISTING TRIGGERS (outreach/engagement/conversion phases)
     - event: prospect_reply_received
       priority: critical
       handler: analyze-and-respond-flow
@@ -78,6 +152,261 @@ workflow:
 
   # Reusable workflow flows
   flows:
+    # =========================================================================
+    # VALIDATION PHASE FLOWS (run before outreach begins)
+    # =========================================================================
+
+    # Data Quality Validation Flow
+    data-quality-validation-flow:
+      description: "Validate contact data before any outreach to ensure deliverability"
+      phase: validation
+      blocking: true  # Must pass before outreach proceeds
+      steps:
+        - id: validate-email-format
+          agent: data-quality-guardian
+          action: validate_email_format
+          inputs:
+            - contact_email
+          rules:
+            - regex: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+            - no_role_based: ["info@", "support@", "sales@", "admin@"]
+            - no_disposable_domains: ["mailinator.com", "tempmail.com", "guerrillamail.com"]
+          outputs:
+            email_valid: boolean
+            email_issues: array
+
+        - id: verify-mx-records
+          agent: data-quality-guardian
+          action: verify_domain_mx
+          inputs:
+            - email_domain
+          validation:
+            - has_mx_records: true
+            - is_catch_all: check
+            - deliverability_score: "> 0.7"
+          outputs:
+            mx_valid: boolean
+            deliverability_score: number
+            domain_reputation: string
+
+        - id: detect-duplicates
+          agent: data-quality-guardian
+          action: check_for_duplicates
+          inputs:
+            - contact_email
+            - first_name
+            - last_name
+            - company
+          matching_rules:
+            exact_email: "block"
+            fuzzy_name_company:
+              threshold: 0.85
+              action: "flag_for_review"
+            same_domain_limit: 5  # Max contacts per company domain
+          outputs:
+            is_duplicate: boolean
+            duplicate_matches: array
+            domain_contact_count: number
+
+        - id: calculate-completeness
+          agent: data-quality-guardian
+          action: score_data_completeness
+          required_fields:
+            - email: 25        # 25 points
+            - first_name: 15   # 15 points
+            - last_name: 10    # 10 points
+            - company: 20      # 20 points
+            - title: 15        # 15 points
+            - linkedin_url: 15 # 15 points
+          outputs:
+            completeness_score: number  # 0-100
+            missing_fields: array
+
+        - id: make-quality-decision
+          agent: data-quality-guardian
+          action: determine_action
+          decision_logic: |
+            // Block: Invalid email or low deliverability
+            if (!email_valid || deliverability_score < 0.5) {
+              return { action: 'block', reason: 'email_quality' };
+            }
+
+            // Block: Duplicate contact
+            if (is_duplicate && duplicate_match_type === 'exact_email') {
+              return { action: 'block', reason: 'duplicate' };
+            }
+
+            // Block: Domain saturation
+            if (domain_contact_count > same_domain_limit) {
+              return { action: 'block', reason: 'domain_saturation' };
+            }
+
+            // Review: Low completeness
+            if (completeness_score < 60) {
+              return { action: 'require_enrichment', reason: 'incomplete_data' };
+            }
+
+            // Review: Fuzzy match duplicate
+            if (is_duplicate && duplicate_match_type === 'fuzzy') {
+              return { action: 'human_review', reason: 'potential_duplicate' };
+            }
+
+            // Pass: Good quality
+            return { action: 'proceed', reason: 'quality_passed' };
+          outputs:
+            decision: string  # proceed, block, require_enrichment, human_review
+            decision_reason: string
+            quality_score: number  # Combined score 0-100
+
+        - id: execute-quality-decision
+          agent: data-quality-guardian
+          action: apply_decision
+          branches:
+            proceed:
+              - log_quality_score
+              - continue_to_outreach
+            block:
+              - mark_contact_as_invalid
+              - remove_from_campaign
+              - notify_if_manual_import
+            require_enrichment:
+              - trigger_enrichment_flow
+              - pause_until_enriched
+            human_review:
+              - add_to_review_queue
+              - notify_assigned_reviewer
+
+    # Human Approval Flow
+    human-approval-flow:
+      description: "Route high-value or high-risk actions for human approval"
+      phase: validation
+      blocking: true
+      steps:
+        - id: evaluate-approval-need
+          agent: approval-coordinator
+          action: determine_approval_requirements
+          criteria:
+            always_require_approval:
+              - campaign_type: "enterprise"
+              - estimated_value: "> $50000"
+              - contacts_count: "> 500"
+              - risk_level: "high"
+            skip_approval:
+              - campaign_type: "nurture"
+              - contacts_count: "< 50"
+              - all_contacts_previously_engaged: true
+          outputs:
+            approval_required: boolean
+            approval_level: string  # standard, manager, executive
+            approval_reason: string
+
+        - id: route-approval-request
+          agent: approval-coordinator
+          action: create_approval_request
+          condition: "approval_required === true"
+          request:
+            title: "Campaign Approval Required: {{campaign_name}}"
+            summary:
+              - campaign_type
+              - target_audience
+              - contact_count
+              - estimated_value
+              - risk_assessment
+            preview:
+              - sample_emails: 3
+              - icp_profile_summary
+            approvers:
+              standard: ["sales_manager"]
+              manager: ["sales_director"]
+              executive: ["vp_sales", "cro"]
+            sla:
+              standard: "4 hours"
+              manager: "8 hours"
+              executive: "24 hours"
+          outputs:
+            approval_id: string
+            approvers_notified: array
+            deadline: timestamp
+
+        - id: monitor-approval-status
+          agent: approval-coordinator
+          action: track_approval
+          poll_interval: "5 minutes"
+          escalation_rules:
+            at_50_percent_sla:
+              - send_reminder_to_approvers
+            at_90_percent_sla:
+              - escalate_to_next_level
+              - notify_requester
+            sla_breached:
+              - auto_escalate
+              - alert_operations
+          outputs:
+            approval_status: string  # pending, approved, denied, escalated
+            approved_by: string
+            approval_notes: string
+
+        - id: process-approval-result
+          agent: approval-coordinator
+          action: handle_approval_decision
+          branches:
+            approved:
+              - log_approval
+              - update_campaign_status: "approved"
+              - trigger: proceed-to-outreach-flow
+            denied:
+              - log_denial_reason
+              - update_campaign_status: "rejected"
+              - notify_campaign_creator
+              - trigger: handle-rejection-flow
+            expired:
+              - log_sla_breach
+              - update_campaign_status: "pending_review"
+              - escalate_to_operations
+
+    # Proceed to Outreach (after approval)
+    proceed-to-outreach-flow:
+      description: "Transition validated contacts into active outreach"
+      phase: outreach
+      steps:
+        - id: activate-campaign
+          agent: outreach-orchestrator
+          action: start_outreach_sequence
+          inputs:
+            - validated_contacts
+            - approved_campaign_config
+          outputs:
+            campaign_activated: boolean
+            first_batch_scheduled: timestamp
+
+    # Handle Rejection (approval denied)
+    handle-rejection-flow:
+      description: "Process denied approvals gracefully"
+      phase: validation
+      steps:
+        - id: notify-stakeholders
+          agent: approval-coordinator
+          action: send_rejection_notification
+          recipients:
+            - campaign_creator
+            - campaign_owner
+          include:
+            - rejection_reason
+            - suggested_modifications
+            - resubmission_process
+
+        - id: archive-or-modify
+          agent: approval-coordinator
+          action: determine_next_steps
+          options:
+            - archive_campaign
+            - save_as_draft_for_modification
+            - schedule_resubmission
+
+    # =========================================================================
+    # OUTREACH/ENGAGEMENT PHASE FLOWS (existing)
+    # =========================================================================
+
     # Main response analysis and decision flow
     analyze-and-respond-flow:
       description: "Analyze prospect reply and determine intelligent next action"
@@ -457,6 +786,33 @@ workflow:
 
   # Quality gates and guardrails
   guardrails:
+    # VALIDATION PHASE THRESHOLDS (Data Quality Guardian)
+    data_quality:
+      min_completeness_score: 60          # Block contacts below this score
+      min_deliverability_score: 0.7       # Block emails likely to bounce
+      max_contacts_per_domain: 5          # Prevent domain saturation
+      duplicate_detection_threshold: 0.85 # Fuzzy match sensitivity
+      blocked_email_patterns:
+        - role_based: ["info@", "support@", "sales@", "admin@", "contact@"]
+        - disposable: ["mailinator.com", "tempmail.com", "guerrillamail.com", "10minutemail.com"]
+        - catch_all_handling: "flag_for_review"
+
+    # APPROVAL THRESHOLDS (Human Approval Flow)
+    approval_requirements:
+      require_approval_when:
+        - estimated_value: "> $50000"
+        - contacts_count: "> 500"
+        - campaign_type: ["enterprise", "strategic"]
+        - risk_level: ["high", "critical"]
+      skip_approval_when:
+        - campaign_type: ["nurture", "re-engagement"]
+        - contacts_count: "< 50"
+        - all_contacts_existing: true
+      sla_hours:
+        standard: 4
+        manager: 8
+        executive: 24
+
     rate_limits:
       max_touches_per_week: 3
       min_hours_between_touches: 48
@@ -465,11 +821,21 @@ workflow:
       - email_deliverability: "> 95%"
       - sentiment_confidence: "> 0.7"
       - personalization_score: "> 0.6"
+      - data_completeness: "> 60%"           # NEW: Validation phase check
+      - mx_record_valid: true                 # NEW: Domain verification
+      - duplicate_free: true                  # NEW: Deduplication check
 
     escalation_rules:
-      - urgency_score: "> 85" → notify_sales_immediately
-      - negative_sentiment: "→ pause_and_review"
-      - spam_complaint: "→ emergency_stop"
+      - condition: "urgency_score > 85"
+        action: "notify_sales_immediately"
+      - condition: "negative_sentiment"
+        action: "pause_and_review"
+      - condition: "spam_complaint"
+        action: "emergency_stop"
+      - condition: "data_quality_score < 50"  # NEW: Quality escalation
+        action: "block_and_review"
+      - condition: "approval_sla_breached"    # NEW: Approval escalation
+        action: "auto_escalate_approval"
 
     auto_stop_conditions:
       - prospect_replied: true
@@ -479,6 +845,17 @@ workflow:
 
   # Performance tracking
   metrics:
+    # VALIDATION PHASE METRICS
+    validation:
+      - data_quality_pass_rate        # % of contacts passing quality checks
+      - email_validity_rate           # % of emails with valid format + MX
+      - duplicate_detection_rate      # % of duplicates caught
+      - completeness_score_avg        # Average data completeness score
+      - approval_rate                 # % of campaigns approved
+      - approval_turnaround_time      # Average time to approval
+      - sla_compliance_rate           # % of approvals within SLA
+
+    # OUTREACH/ENGAGEMENT METRICS (existing)
     track:
       - reply_rate
       - positive_reply_rate
@@ -486,14 +863,44 @@ workflow:
       - time_to_response
       - objection_resolution_rate
       - escalation_to_close_rate
+      - bounce_rate                   # NEW: Track bounces (validation effectiveness)
+      - domain_reputation_score       # NEW: Overall sender reputation
 
     goals:
+      # Validation phase goals
+      data_quality_pass_rate: "> 85%"
+      email_validity_rate: "> 95%"
+      approval_turnaround_time: "< 4 hours"
+      sla_compliance_rate: "> 90%"
+
+      # Outreach phase goals (existing)
       reply_rate: "> 15%"
       positive_reply_rate: "> 8%"
       meeting_booking_rate: "> 3%"
       objection_resolution: "> 40%"
+      bounce_rate: "< 2%"             # NEW: Keep bounces low
 
   menu:
+    # VALIDATION PHASE COMMANDS
+    - trigger: /validate-contacts
+      label: "Run Data Quality Validation"
+      workflow: dynamic-outreach
+      flow: data-quality-validation-flow
+      description: "Validate contact list before outreach (email format, MX records, duplicates)"
+
+    - trigger: /request-approval
+      label: "Request Campaign Approval"
+      workflow: dynamic-outreach
+      flow: human-approval-flow
+      description: "Submit campaign for human approval (required for high-value campaigns)"
+
+    - trigger: /check-approval-status
+      label: "Check Approval Status"
+      workflow: dynamic-outreach
+      flow: monitor-approval-status
+      description: "Check pending approval requests and SLA status"
+
+    # OUTREACH PHASE COMMANDS
     - trigger: /start-dynamic-outreach
       label: "Launch Adaptive Outreach Campaign"
       workflow: dynamic-outreach
