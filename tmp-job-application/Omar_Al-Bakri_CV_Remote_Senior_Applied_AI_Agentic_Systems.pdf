@@ -1,0 +1,356 @@
+%PDF-1.4
+%ASCII-PDF
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 4760 >>
+stream
+BT
+/F2 12 Tf
+1 0 0 1 45 800 Tm
+(OMAR AL-BAKRI) Tj
+/F1 8.2 Tf
+1 0 0 1 45 787 Tm
+(Senior Applied AI & Agentic Systems Engineer | Python + TypeScript | LLM Agents, RAG, Evals & Full-Stack) Tj
+/F1 8.2 Tf
+1 0 0 1 45 775.5 Tm
+(Product Delivery) Tj
+/F1 8.2 Tf
+1 0 0 1 45 764 Tm
+(Thailand-based, currently travelling in Indonesia | Fully remote worldwide | UK work authorisation) Tj
+/F1 8.2 Tf
+1 0 0 1 45 752.5 Tm
+(+66 95 916 7050 / +44 7542 857742 | albakri.omar@gmail.com | linkedin.com/in/omaralbakri | omarbakri.com) Tj
+/F1 8.2 Tf
+1 0 0 1 45 741 Tm
+(| call-score.com) Tj
+/F1 8.2 Tf
+1 0 0 1 45 729.5 Tm
+() Tj
+/F2 10 Tf
+1 0 0 1 45 718 Tm
+(PROFILE) Tj
+/F1 8.2 Tf
+1 0 0 1 45 705 Tm
+(Senior Applied AI Engineer and product builder focused on turning LLM and agent capabilities into) Tj
+/F1 8.2 Tf
+1 0 0 1 45 693.5 Tm
+(reliable, user-facing systems. Builds production-oriented AI products end to end across Python,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 682 Tm
+(TypeScript, full-stack application engineering, agent orchestration, RAG and context pipelines,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 670.5 Tm
+(evaluation, observability, integrations and controlled autonomous execution. Founded and operates) Tj
+/F1 8.2 Tf
+1 0 0 1 45 659 Tm
+(CallScore and built thredOS, ruleIQ and Helios from scratch, combining hands-on engineering with product) Tj
+/F1 8.2 Tf
+1 0 0 1 45 647.5 Tm
+(ownership, commercial judgement and 15+ years of financial-services experience.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 636 Tm
+() Tj
+/F2 10 Tf
+1 0 0 1 45 624.5 Tm
+(APPLIED AI & AGENTIC ENGINEERING) Tj
+/F1 8.2 Tf
+1 0 0 1 45 611.5 Tm
+(- Production agents: Stateful workflows, planning, typed tool use, retries, memory, permissions, human review,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 600 Tm
+(  failure handling, recovery paths and controlled autonomy.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 588.5 Tm
+(- Full-stack ownership: Problem framing and architecture through backend, frontend, APIs, integrations, testing,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 577 Tm
+(  deployment, monitoring, documentation and iteration.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 565.5 Tm
+(- RAG, context and memory: Source-grounded retrieval, GraphRAG/domain graphs, provenance-aware context) Tj
+/F1 8.2 Tf
+1 0 0 1 45 554 Tm
+(  assembly, PostgreSQL, Redis and Neo4j state and memory.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 542.5 Tm
+(- Evaluation and reliability: Structured outputs, schema validation, golden cases, regression tests, trace review,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 531 Tm
+(  hallucination controls, fallbacks, rate limits, circuit breakers and cost monitoring.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 519.5 Tm
+(- Core stack: Python, TypeScript, FastAPI, Node.js/Express, Next.js/React, REST APIs, LangGraph/LangChain,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 508 Tm
+(  Zod/Pydantic, PostgreSQL, Redis, Neo4j, Docker and GitHub Actions.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 496.5 Tm
+() Tj
+/F2 10 Tf
+1 0 0 1 45 485 Tm
+(SELECTED APPLIED AI SYSTEMS) Tj
+/F1 8.2 Tf
+1 0 0 1 45 472 Tm
+() Tj
+/F2 9 Tf
+1 0 0 1 45 460.5 Tm
+(CallScore | Founder | Live Market-Intelligence and Multi-Agent Operating System) Tj
+/F1 8.2 Tf
+1 0 0 1 45 449 Tm
+(- Founded and operates a live public platform converting long-form creator content into auditable market-call) Tj
+/F1 8.2 Tf
+1 0 0 1 45 437.5 Tm
+(  records with timestamps, evidence receipts, outcome tracking and transparent scoring.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 426 Tm
+(- Built a multi-agent operating layer spanning data acquisition, extraction, verification, market-data matching,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 414.5 Tm
+(  scoring, connected-app automation, review queues, tests and monitoring.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 403 Tm
+(- Implemented typed graph state, authority-based routing, dry-run orchestration, fail-closed controls, receipts,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 391.5 Tm
+(  fallback routes and evidence-based methodology.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 380 Tm
+(Stack: Python, TypeScript, Next.js, LangGraph, LangChain Core, Zod, PostgreSQL, Redis, PostHog, Composio MCP,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 368.5 Tm
+(Sentry, Netlify) Tj
+/F1 8.2 Tf
+1 0 0 1 45 357 Tm
+() Tj
+/F2 9 Tf
+1 0 0 1 45 345.5 Tm
+(thredOS | Local-First Workflow OS for Multi-Agent Execution) Tj
+/F1 8.2 Tf
+1 0 0 1 45 334 Tm
+(- Built a desktop-first workflow OS for long-horizon multi-agent work across typed threads, DAG dependencies,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 322.5 Tm
+(  tools, models, policies, provenance and resumable execution.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 311 Tm
+(- Delivered Desktop, Node SDK and Thread-Runner layers with React Flow, CLI handlers, 21 API route groups,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 299.5 Tm
+(  model-agnostic routing, permission controls and recovery paths.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 288 Tm
+(Stack: Bun, TypeScript, Next.js, React Flow, Zustand, TanStack Query, typed APIs, model routing and policy controls) Tj
+/F1 8.2 Tf
+1 0 0 1 45 276.5 Tm
+() Tj
+/F2 9 Tf
+1 0 0 1 45 265 Tm
+(ruleIQ | Agentic Compliance and Governance Platform) Tj
+/F1 8.2 Tf
+1 0 0 1 45 253.5 Tm
+(- Built a full-stack AI compliance platform with LangGraph agents, an explicit state loop, GraphRAG/Neo4j) Tj
+/F1 8.2 Tf
+1 0 0 1 45 242 Tm
+(  knowledge layer, structured outputs and hallucination controls.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 230.5 Tm
+(- Implemented JWT/RBAC, AES-GCM encryption, Pydantic-style validation, observability-ready logging and 1,884+) Tj
+/F1 8.2 Tf
+1 0 0 1 45 219 Tm
+(  backend tests across 56+ API routers and 140+ services.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 207.5 Tm
+(Stack: FastAPI, Python, PostgreSQL, Neo4j, Redis, LangGraph, Next.js, Docker, GitHub Actions CI) Tj
+/F1 8.2 Tf
+1 0 0 1 45 196 Tm
+() Tj
+/F2 9 Tf
+1 0 0 1 45 184.5 Tm
+(Helios | AI-Driven Commercial Automation Platform at RTGS.global) Tj
+/F1 8.2 Tf
+1 0 0 1 45 173 Tm
+(- Built and deployed Helios, replacing fragmented manual prospecting workflows and increasing lead conversion by) Tj
+/F1 8.2 Tf
+1 0 0 1 45 161.5 Tm
+(  25%.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 150 Tm
+(- Integrated Explorium, Apollo, HubSpot and Postmark with Electron/React, Node/Express, FastAPI, PostgreSQL,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 138.5 Tm
+(  Redis and Neo4j/Graphiti.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 127 Tm
+(- Built human-in-the-loop agent workflows with execution limits, guardrails, circuit breakers, cost caps,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 115.5 Tm
+(  cancellation windows and multi-provider routing.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 104 Tm
+() Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 4587 >>
+stream
+BT
+/F2 10 Tf
+1 0 0 1 45 800 Tm
+(PROFESSIONAL EXPERIENCE) Tj
+/F1 8.2 Tf
+1 0 0 1 45 787 Tm
+() Tj
+/F2 9 Tf
+1 0 0 1 45 775.5 Tm
+(Independent Applied AI Engineer & Product Builder | Fully Remote | 2023-Present) Tj
+/F1 8.2 Tf
+1 0 0 1 45 764 Tm
+(- Builds production-oriented AI products across agent design, architecture, frontend, backend, data/retrieval flows,) Tj
+/F1 8.2 Tf
+1 0 0 1 45 752.5 Tm
+(  evaluation, automated testing, deployment, observability and documentation.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 741 Tm
+(- Combines hands-on engineering with product judgement, customer discovery, commercial prioritisation and senior) Tj
+/F1 8.2 Tf
+1 0 0 1 45 729.5 Tm
+(  stakeholder communication.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 718 Tm
+() Tj
+/F2 9 Tf
+1 0 0 1 45 706.5 Tm
+(RTGS.global | Director, Partnerships & Client Services; Asia Territory Lead; AI Lead | Oct 2024-Mar 2026) Tj
+/F1 8.2 Tf
+1 0 0 1 45 695 Tm
+(- Built and deployed Helios, increasing lead conversion by 25%.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 683.5 Tm
+(- Owned AI strategy for commercial execution and worked across Product, Engineering, Compliance and Commercial) Tj
+/F1 8.2 Tf
+1 0 0 1 45 672 Tm
+(  teams.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 660.5 Tm
+() Tj
+/F2 9 Tf
+1 0 0 1 45 649 Tm
+(Banking Circle | Senior Account Manager | Mar 2023-Sep 2023) Tj
+/F1 8.2 Tf
+1 0 0 1 45 637.5 Tm
+(- Introduced AI-assisted prospecting, increasing response rates by 20%.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 626 Tm
+(- Led onboarding redesign that reduced onboarding time by 50% and supported 30%+ payment-volume growth.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 614.5 Tm
+() Tj
+/F2 9 Tf
+1 0 0 1 45 603 Tm
+(Convera | Head of Bank Relationship Sales, EMEA; Senior Business Development Manager | Feb 2021-Feb 2023) Tj
+/F1 8.2 Tf
+1 0 0 1 45 591.5 Tm
+(- Closed a GBP 1M financial-institution partnership and expanded banking relationships contributing to 30%) Tj
+/F1 8.2 Tf
+1 0 0 1 45 580 Tm
+(  payment-volume growth.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 568.5 Tm
+() Tj
+/F2 9 Tf
+1 0 0 1 45 557 Tm
+(Earlier Career | 2006-2020) Tj
+/F1 8.2 Tf
+1 0 0 1 45 545.5 Tm
+(Financial services, executive search and advisory, including Bank of America Merrill Lynch, BNP Paribas CIB, Marlin) Tj
+/F1 8.2 Tf
+1 0 0 1 45 534 Tm
+(Hawk Group, Hoggett Bowers, Alderbrooke Group and Leathwaite International. Won 10 global clients including) Tj
+/F1 8.2 Tf
+1 0 0 1 45 522.5 Tm
+(Santander and Vanguard, generating GBP 1.53M in fees.) Tj
+/F1 8.2 Tf
+1 0 0 1 45 511 Tm
+() Tj
+/F2 10 Tf
+1 0 0 1 45 499.5 Tm
+(TECHNICAL SKILLS) Tj
+/F1 8.2 Tf
+1 0 0 1 45 486.5 Tm
+(Languages: Python, TypeScript, JavaScript, SQL) Tj
+/F1 8.2 Tf
+1 0 0 1 45 475 Tm
+(Frontend: Next.js, React, Electron, React Flow, Zustand, TanStack Query, Tailwind CSS) Tj
+/F1 8.2 Tf
+1 0 0 1 45 463.5 Tm
+(Backend: Node.js, Express, FastAPI, REST APIs, webhooks, typed routes, service decomposition) Tj
+/F1 8.2 Tf
+1 0 0 1 45 452 Tm
+(Agents: LangGraph, LangChain, CrewAI/AutoGen patterns, custom multi-agent orchestration, MCP-style tools) Tj
+/F1 8.2 Tf
+1 0 0 1 45 440.5 Tm
+(State and data: PostgreSQL, Redis, Neo4j/Graphiti, GraphRAG, retrieval pipelines, checkpointing) Tj
+/F1 8.2 Tf
+1 0 0 1 45 429 Tm
+(Evaluation: Golden cases, regression suites, prompt evaluation, structured outputs, validation, trace review) Tj
+/F1 8.2 Tf
+1 0 0 1 45 417.5 Tm
+(Reliability: Sentry, LangSmith/Langfuse-style traces, rate limits, fallbacks, circuit breakers, latency and cost) Tj
+/F1 8.2 Tf
+1 0 0 1 45 406 Tm
+(tracking) Tj
+/F1 8.2 Tf
+1 0 0 1 45 394.5 Tm
+(LLMs: OpenAI, Anthropic/Claude, Gemini, OpenRouter, model routing, streaming and caching) Tj
+/F1 8.2 Tf
+1 0 0 1 45 383 Tm
+(Domain: Agentic products, developer tooling, fintech/payments, compliance automation, market intelligence and growth) Tj
+/F1 8.2 Tf
+1 0 0 1 45 371.5 Tm
+(systems) Tj
+/F1 8.2 Tf
+1 0 0 1 45 360 Tm
+() Tj
+/F2 10 Tf
+1 0 0 1 45 348.5 Tm
+(EDUCATION) Tj
+/F1 8.2 Tf
+1 0 0 1 45 335.5 Tm
+(BSc \(Hons\) Physiology / Pharmacology - Nottingham Trent University) Tj
+ET
+endstream
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000020 00000 n 
+0000000069 00000 n 
+0000000134 00000 n 
+0000000204 00000 n 
+0000000279 00000 n 
+0000000422 00000 n 
+0000005257 00000 n 
+0000005400 00000 n 
+trailer
+<< /Size 9 /Root 1 0 R >>
+startxref
+10036
+%%EOF
